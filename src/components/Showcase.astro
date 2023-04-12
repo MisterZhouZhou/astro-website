@@ -1,0 +1,31 @@
+---
+import logo from '../images/logo.svg';
+
+export interface Props {
+  heading?: string;
+  text?: string;
+  showExtra?: boolean;
+}
+
+const { heading = "Welcome To The Astro Crash Course!", text="Build super fast HTML-first websites using your favorite JavaScript frameworks", showExtra = false } = Astro.props as Props;
+---
+
+<section class="px-8 py-8 bg-secondary bg-gradient-to-b from-primary to-secondary">
+  <div class=" max-w-lg text-white text-center my-auto mx-12">
+    <h1 class="text-5xl mb-5">{heading}</h1>
+    <p>
+      {text}
+    </p>
+  </div>
+
+  {showExtra && <>
+    <div class="text-center">
+    <img class="rounded-[10px] m-auto" src={logo} alt="" />
+    <img class="rounded-[10px] m-auto" src={logo} alt="" />
+  </div>
+
+  <p class="text-white text-center">
+    <small>This is a demo website used for the YouTube crash course</small>
+  </p>
+  </>}
+</section>

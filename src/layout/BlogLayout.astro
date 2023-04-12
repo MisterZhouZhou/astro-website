@@ -1,0 +1,21 @@
+---
+import Layout from "../layout/Layout.astro";
+import Card from "../components/Card.astro";
+
+const { content: { title, author, date} } = Astro.props;
+---
+
+<Layout title="Astro Blog">
+  <section class="page-content flex-grow">
+    <a class="inline-block mt-4 ml-4 px-2 py-1 rounded-md bg-[#333] text-white text-sm transition" href="/blog">Go Back</a>
+    <Card>
+      <h2>{title}</h2>
+      <div>
+        Written by <strong>{author} </strong> on {new Date(date).toLocaleDateString()}
+      </div>
+      <article class="prose lg:prose-xl">
+        <slot />
+      </article> 
+    </Card>
+  </section>
+</Layout>

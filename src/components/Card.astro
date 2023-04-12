@@ -1,0 +1,21 @@
+---
+export interface Props {
+  dark?: boolean;
+  class?: string;
+}
+
+const { dark = false, class: className } = Astro.props as Props;
+---
+
+<div class:list={['card', {dark}, className]}>
+  <slot />
+</div>
+
+<style>
+  .card {
+    @apply bg-white p-5 mb-5 rounded-lg shadow-md
+  }
+  .dark {
+    @apply bg-primary text-white
+  }
+</style>

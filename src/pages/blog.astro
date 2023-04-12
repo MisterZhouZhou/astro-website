@@ -1,0 +1,35 @@
+---
+import Layout from "../layout/Layout.astro";
+import Card from "../components/Card.astro";
+import Showcase from "../components/Showcase.astro";
+let posts = await Astro.glob('../posts/*.md');
+// 时间倒序排序
+posts = posts.sort(
+	(a, b) => new Date(b.frontmatter.pubDate).getTime() - new Date(a.frontmatter.pubDate).getTime()
+);
+---
+
+<Layout title="Astro Blog">
+  <div class="flex-grow">
+    <Showcase heading="Astro Blog" text="A simple blog built with Astro" />
+    <section class="page-content">
+      <div class=" mx-4">
+        {posts.map(({ frontmatter }) => (
+          <Card class="flex min-h-[152px]">
+            {frontmatter.heroImage && <img class="mr-4 w-28 h-28" src={frontmatter.heroImage} alt={frontmatter.heroImage} />}
+            <div class="flex flex-col justify-between">
+              <div>
+                <h1>{frontmatter.title}</h1>
+                <div class="text-gray-500">
+                  Written by <strong>{frontmatter.author} </strong> on {new Date(frontmatter.pubDate).toLocaleDateString()}
+                </div>
+                <p class="text-gray-500">{frontmatter.description}</p> 
+              </div> 
+              <a class="bg-secondary inline-block px-4 max-w-[130px] rounded text-white" href={`/blogs/${frontmatter.slug}`}>Read More ></a>
+            </div>
+          </Card>
+        ))}
+      </div>
+    </section>
+  </div>
+</Layout>

@@ -1,0 +1,57 @@
+---
+export interface Props {
+  activeTextColor?: string;
+  headings: string[];
+  contents: string[];
+}
+
+const { headings, contents, activeTextColor = '#A741FF' } = Astro.props as Props;
+---
+
+<div class="tabs mt-7 max-w-xs">
+  <ul class="tabs-header flex bg-[#333] text-white px-2.5 py-2.5">
+   {headings.map(heading => (
+      <li class="mr-5 cursor-pointer">{heading}</li>
+    ))}
+  </ul>
+  <ul class="tabs-content bg-slate-200 p-5 border-solid border-[#333] border font-bold text-lg">
+    {contents.map(content => (
+      <li class="tab">{content}</li>
+    ))}
+  </ul>
+</div>
+
+<script define:vars={{activeTextColor}}>
+  function createTabs(element) {
+    const header = element.querySelector('.tabs-header');
+    const content = element.querySelector('.tabs-content');
+    const tab_headers = [...header.children];
+    const tab_contents = [...content.children];
+    tab_contents.forEach((x) => (x.style.display = 'none'));
+    let current_tab_index = -1;
+
+    function setTab(index) {
+      if (current_tab_index > -1) {
+        tab_headers[current_tab_index].style.fontWeight = 400;
+        tab_headers[current_tab_index].style.color = '#fff';
+        tab_contents[current_tab_index].style.display = 'none';
+      }
+      tab_headers[index].style.fontWeight = 800;
+      tab_headers[index].style.color = activeTextColor;
+      tab_contents[index].style.display = 'flex';
+      current_tab_index = index;
+    }
+
+    let default_tab_index = tab_headers.findIndex((x) => {
+      return [...x.classList].indexOf('default-tab') > -1;
+    });
+
+    default_tab_index = default_tab_index === -1 ? 0 : default_tab_index;
+    setTab(default_tab_index);
+    tab_headers.forEach((x, i) => (x.onclick = (event) => setTab(i)));
+  }
+
+  // Run
+  [...document.querySelectorAll('.tabs')].forEach((x) => createTabs(x));
+
+</script>

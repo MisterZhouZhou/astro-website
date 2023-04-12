@@ -1,0 +1,36 @@
+---
+import Layout from '../../layout/Layout.astro';
+import Card from '../../components/Card.astro';
+
+export async function getStaticPaths() {
+  const posts = await Astro.glob('../../posts/*.md');
+  return posts.map(post => ({
+    params: {
+      slug: post.frontmatter.slug
+    },
+    props: {
+      post
+    }
+  }));
+}
+const { Content, frontmatter } = Astro.props.post;
+---
+
+<Layout title={frontmatter.title}>
+  <section class="page-content flex-grow">
+    <a class="inline-block mt-4 ml-4 px-2 py-1 rounded-md bg-[#333] text-white text-sm transition" href="/blog">Go Back</a>
+    <div class="px-5 mt-5">
+      {frontmatter.heroImage && <img class="w-full" src={frontmatter.heroImage} alt={frontmatter.heroImage} />}
+      <Card class="mt-0">
+        <p class="text-center text-4xl mt-5">{frontmatter.title}</p>
+        <div class="text-center text-gray-500 mb-5">
+          Written by <strong>{frontmatter.author} </strong> on {new Date(frontmatter.pubDate).toLocaleDateString()}
+        </div>
+        <hr />
+        <article class="prose lg:prose-xl mt-5">
+          <Content />
+        </article>
+      </Card>
+    </div>
+  </section>
+</Layout>
